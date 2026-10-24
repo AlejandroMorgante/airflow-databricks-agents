@@ -2,9 +2,9 @@
 
 Local playground for testing `DatabricksAgentInvokeOperator`, `DatabricksAgentHook`, and the Common AI integration introduced in [apache/airflow#74386](https://github.com/apache/airflow/pull/74386).
 
-![Invoke a Databricks Durable Agent as a DAG task or consult it as an agent tool](image.png)
+![Invoke a Databricks Durable Agent as a DAG task or consult it as an agent tool](docs/images/airflow-databricks-integration-patterns.png)
 
-![Three ways to invoke a Durable Agent from Apache Airflow](<image copy 2.png>)
+![Three ways to invoke a Durable Agent from Apache Airflow](docs/images/airflow-databricks-agent-runtime.png)
 
 Architecture adapted from the [Databricks agent compute stack](https://docs.databricks.com/aws/en/agents/deploy/). Airflow calls the invocation API exposed by `DurableAgentServer`, hosted on Agent Runtime on Databricks Apps. The operator, direct hook, and managed-agent toolset are three Airflow integration patterns for the same API.
 
