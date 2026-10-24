@@ -1,0 +1,33 @@
+# Local environment and credentials
+.env
+.env.*
+!.env.example
+.databrickscfg
+.databricks/
+secrets/
+credentials/
+connections*.json
+
+# Python environments, bytecode, and tool caches
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+.coverage.*
+htmlcov/
+
+# Local Airflow state and generated passwords
+.airflow/
+logs/
+airflow.cfg
+airflow.db*
+simple_auth_manager_passwords.json*
+
+# Editor and operating system files
+.idea/
+.vscode/
+.DS_Store

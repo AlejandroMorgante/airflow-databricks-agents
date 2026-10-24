@@ -1,0 +1,6 @@
+# The Databricks provider is installed from apache/airflow main in the Dockerfile.
+# The OpenAI-compatible client calls the Databricks model in AgentOperator.
+apache-airflow-providers-common-ai[openai]==1.0.0
+# Sync and async drivers for Airflow's PostgreSQL metadata database.
+psycopg2-binary>=2.9.9,<3.0
+asyncpg>=0.30.0,<1.0

@@ -1,0 +1,3 @@
+databricks-agentbricks==0.7.0
+databricks-sdk==0.156.0
+uvicorn==0.54.0

@@ -1,0 +1,60 @@
+name: airflow-databricks-agents
+
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: airflow
+      POSTGRES_PASSWORD: airflow
+      POSTGRES_DB: airflow
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U airflow -d airflow"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  airflow:
+    build:
+      context: .
+      args:
+        AIRFLOW_SOURCE_REF: ${AIRFLOW_SOURCE_REF:-main}
+    image: airflow-databricks-agents:local
+    command: ["python", "/opt/airflow-tools/start_airflow.py"]
+    env_file: .env
+    environment:
+      AIRFLOW_LOCAL_ADMIN_PASSWORD: ${AIRFLOW_LOCAL_ADMIN_PASSWORD:-admin}
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+      AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: "true"
+      AIRFLOW__CORE__PARALLELISM: "4"
+      AIRFLOW__CORE__AUTH_MANAGER: airflow.api_fastapi.auth.managers.simple.simple_auth_manager.SimpleAuthManager
+      AIRFLOW__CORE__SIMPLE_AUTH_MANAGER_USERS: admin:admin
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
+      AIRFLOW__CORE__EXECUTION_API_SERVER_URL: http://localhost:8080/execution/
+      AIRFLOW__API__BASE_URL: http://localhost:${AIRFLOW_PORT:-8080}
+      AIRFLOW__API__WORKERS: "1"
+      AIRFLOW__DAG_PROCESSOR__REFRESH_INTERVAL: "10"
+    ports:
+      - "127.0.0.1:${AIRFLOW_PORT:-8080}:8080"
+    volumes:
+      - airflow-home:/opt/airflow
+      - ./dags:/opt/airflow/dags:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - >-
+          curl --fail --silent http://localhost:8080/api/v2/monitor/health |
+          python -c 'import json, sys; h = json.load(sys.stdin); sys.exit(not all(h.get(k, {}).get("status") == "healthy" for k in ("metadatabase", "scheduler", "triggerer", "dag_processor")))'
+      interval: 30s
+      timeout: 10s
+      start_period: 120s
+      retries: 10
+
+volumes:
+  postgres-data:
+  airflow-home:
