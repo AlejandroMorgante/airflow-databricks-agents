@@ -1,0 +1,11 @@
+Airflow + Databricks Durable Agents POC
+Copyright 2026 Alejandro Morgante
+
+This project includes an agent example adapted from Apache Airflow.
+The upstream attribution is reproduced below.
+
+Apache Airflow
+Copyright 2016-2026 The Apache Software Foundation
+
+This product includes software developed at
+The Apache Software Foundation (http://www.apache.org/).

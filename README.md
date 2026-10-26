@@ -195,6 +195,13 @@ docker compose down --volumes
 
 This does not stop or delete the Databricks App. If you created one for testing, stop it in Databricks when you are done.
 
+## License
+
+This project is licensed under the [Apache License 2.0](LICENSE).
+See [NOTICE](NOTICE) for attribution, including the agent example adapted from
+Apache Airflow. Third-party names and logos belong to their respective owners;
+this is an independent POC, not an official Apache or Databricks project.
+
 ## References
 
 - [Operator and hook guide on main](https://github.com/apache/airflow/blob/main/providers/databricks/docs/operators/agent.rst).
